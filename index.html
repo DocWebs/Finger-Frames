@@ -140,13 +140,19 @@
 
   <div id="toolbar"></div>
   <script>
-    window.addEventListener("load", async () => {
-      try {
-        await document.documentElement.requestFullscreen();
-      } catch (err) {
-        console.log("Fullscreen request blocked:", err);
-      }
-    });
+    // Enter fullscreen on the user's first interaction
+document.addEventListener("click", async function enterFullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+    }
+  } catch (err) {
+    console.warn("Fullscreen request failed:", err);
+  }
+
+  // Only try once
+  document.removeEventListener("click", enterFullscreen);
+});
   </script>
   <script type="module" src="main.js"></script>
 </body>
