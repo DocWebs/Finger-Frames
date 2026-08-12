@@ -8,7 +8,6 @@ const WASM_URL =
 const MODEL_URL =
   "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
 
-// Demo mode (?demo): synthetic video + fake landmarks, for testing without a camera.
 const DEMO = new URLSearchParams(location.search).has("demo");
 
 const WRIST = 0;
@@ -38,6 +37,21 @@ const EFFECTS = [
   { id: "toon", label: "Toon" },
   { id: "vangogh", label: "Van Gogh" },
 ];
+
+const fullscreenBtn = document.getElementById("fullscreen-btn");
+fullscreenBtn.addEventListener("click", async () => {
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+      fullscreenBtn.textContent = "Exit Fullscreen";
+    } else {
+      await document.exitFullscreen();
+      fullscreenBtn.textContent = "Fullscreen";
+    }
+  } catch (err) {
+    console.error("Fullscreen error:", err);
+  }
+});
 
 // Offscreen canvas for the toon effect (processed at reduced resolution).
 const toon = document.createElement("canvas");
@@ -303,7 +317,7 @@ function quadBBox(q) {
   };
 }
 
-// ---- Van Gogh: live painterly rendering, no AI ----
+// ---- live painterly rendering, no AI ----
 // Hertzmann-style stroke-based rendering, adapted for real time:
 //   1. Build a SMOOTHED orientation field from the image gradients (this is
 //      what makes strokes flow coherently instead of jittering per-pixel).
