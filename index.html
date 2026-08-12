@@ -135,7 +135,7 @@
       background: #081b29;
       backdrop-filter: blur(16px);
 
-      color: white;
+      color: #fffff0;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
@@ -146,6 +146,35 @@
     #fullscreen-btn:active {
       transform: scale(0.95);
     }
+
+    #record-controls {
+      position: fixed;
+      top: 20px;
+      right: 130px;
+      z-index: 20;
+
+      display: flex;
+      gap: 8px;
+   }
+
+   #record-controls button {
+     padding: 10px 16px;
+     border: 1px solid #fffff0;
+     border-radius: 10px;
+
+     background: #081b29;
+     backdrop-filter: blur(16px);
+
+     color: #fffff0;
+     font-size: 13px;
+     font-weight: 600;
+     cursor: pointer;
+   }
+
+   #record-controls button:disabled {
+     opacity: 0.35;
+     cursor: default;
+   }
   </style>
 </head>
 <body>
@@ -163,6 +192,12 @@
     <div id="hint-text">Frame your shot 🎬 — both hands up, thumbs and index fingers out.</div>
   </div>
   <button id="fullscreen-btn">Fullscreen</button>
+  
+  <div id="record-controls">
+    <button id="start-recording">● Record</button>
+    <button id="stop-recording" disabled>■ Stop</button>
+  </div>
+  
   <div id="toolbar"></div>
   <script type="module" src="main.js"></script>
 </body>
