@@ -119,7 +119,7 @@ for (let i = 0; i < 256; i++) {
     (Math.round((i / 255) * (POSTER_LEVELS - 1)) / (POSTER_LEVELS - 1)) * 255
   );
 }
-let effect = "vangogh";
+let effect = "pixelate";
 
 // Smoothed quad corners + presence fade (0..1).
 let corners = null;
