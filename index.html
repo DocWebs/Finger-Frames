@@ -121,6 +121,35 @@
       margin-right: 5px;
       font-size: 11px;
     }
+
+    #fullscreen-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 20;
+
+      padding: 10px 16px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+
+      background: rgba(20,20,24,0.72);
+      backdrop-filter: blur(12px);
+
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+
+      transition: background 0.15s, transform 0.15s;
+    }
+
+    #fullscreen-btn:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    #fullscreen-btn:active {
+      transform: scale(0.95);
+    }
   </style>
 </head>
 <body>
@@ -137,23 +166,8 @@
   <div id="hint">
     <div id="hint-text">Frame your shot 🎬 — both hands up, thumbs and index fingers out.</div>
   </div>
-
+  <button id="fullscreen-btn">Fullscreen</button>
   <div id="toolbar"></div>
-  <script>
-    // Enter fullscreen on the user's first interaction
-document.addEventListener("click", async function enterFullscreen() {
-  try {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
-    }
-  } catch (err) {
-    console.warn("Fullscreen request failed:", err);
-  }
-
-  // Only try once
-  document.removeEventListener("click", enterFullscreen);
-});
-  </script>
   <script type="module" src="main.js"></script>
 </body>
 </html>
