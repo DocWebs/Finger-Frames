@@ -38,6 +38,7 @@ const EFFECTS = [
   { id: "vangogh", label: "Van Gogh" },
 ];
 
+// To make the app full screen
 const fullscreenBtn = document.getElementById("fullscreen-btn");
 fullscreenBtn.addEventListener("click", async () => {
   try {
@@ -51,6 +52,61 @@ fullscreenBtn.addEventListener("click", async () => {
   } catch (err) {
     console.error("Fullscreen error:", err);
   }
+});
+
+// To record the video
+const startRecordingBtn = document.getElementById("start-recording");
+const stopRecordingBtn = document.getElementById("stop-recording");
+
+let mediaRecorder = null;
+let recordedChunks = [];
+
+startRecordingBtn.addEventListener("click", () => {
+  recordedChunks = [];
+
+  // Capture exactly what is being rendered on screen
+  const stream = canvas.captureStream(30);
+
+  mediaRecorder = new MediaRecorder(stream, {
+    mimeType: "video/webm;codecs=vp9"
+  });
+
+  mediaRecorder.ondataavailable = (event) => {
+    if (event.data.size > 0) {
+      recordedChunks.push(event.data);
+    }
+  };
+
+  mediaRecorder.onstop = () => {
+    const blob = new Blob(recordedChunks, {
+      type: "video/webm"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `finger-frame-${Date.now()}.webm`;
+    a.click();
+
+    URL.revokeObjectURL(url);
+  };
+
+  mediaRecorder.start();
+
+  startRecordingBtn.disabled = true;
+  stopRecordingBtn.disabled = false;
+  startRecordingBtn.textContent = "● Recording...";
+});
+
+stopRecordingBtn.addEventListener("click", () => {
+  if (!mediaRecorder) return;
+
+  mediaRecorder.stop();
+
+  startRecordingBtn.disabled = false;
+  stopRecordingBtn.disabled = true;
+  startRecordingBtn.textContent = "● Record";
 });
 
 // Offscreen canvas for the toon effect (processed at reduced resolution).
